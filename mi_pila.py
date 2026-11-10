@@ -34,27 +34,77 @@ class MiPila:
             else:
                 print(f"  [{i}] {self.datos[i]}")
 
-    # ------- ✍ IMPLEMENTA (tabla 3) · recorre SIEMPRE del tope al fondo -------
+    # ------- ✍ IMPLEMENTACIÓN (tabla 3) · recorre SIEMPRE del tope al fondo -------
+
     def desapilar(self):
-        pass
+        """Retira y retorna el elemento en el TOPE (último que entró).
+        En una pila no hay que desplazar elementos: solo se limpia el tope.
+        """
+        if self.cantidad == 0:
+            print("  ⚠ La pila está vacía")
+            return None
+
+        # El tope siempre está en cantidad - 1
+        eliminado = self.datos[self.cantidad - 1]
+        self.datos[self.cantidad - 1] = None
+        self.cantidad -= 1
+        return eliminado
 
     def ver_tope(self):
-        pass
+        """Retorna el elemento que está en la cima sin extraerlo."""
+        if self.cantidad == 0:
+            print("  ⚠ La pila está vacía")
+            return None
+        return self.datos[self.cantidad - 1]
 
     def buscar(self, numero):
-        pass
+        """Busca secuencialmente desde el TOPE hacia el FONDO."""
+        if self.cantidad == 0:
+            return None
+
+        for i in range(self.cantidad - 1, -1, -1):
+            if self.datos[i].numero == numero:
+                return self.datos[i]
+        return None
 
     def modificar(self, numero, nuevo_destino, nuevo_asiento):
-        pass
+        """Modifica datos del pasajero buscándolo desde el tope."""
+        pasajero = self.buscar(numero)
+        if pasajero:
+            pasajero.destino = nuevo_destino
+            pasajero.asiento = nuevo_asiento
+            return True
+        return False
 
     def eliminar_por_numero(self, numero):
-        pass
+        """Busca desde el tope y elimina desplazando a la izquierda."""
+        posicion = -1
+        for i in range(self.cantidad - 1, -1, -1):
+            if self.datos[i].numero == numero:
+                posicion = i
+                break
+
+        if posicion == -1:
+            return False
+
+        # Desplaza hacia la izquierda para cubrir el hueco
+        for i in range(posicion, self.cantidad - 1):
+            self.datos[i] = self.datos[i + 1]
+
+        self.datos[self.cantidad - 1] = None
+        self.cantidad -= 1
+        return True
 
     def copiar(self):
-        pass
+        """Crea una réplica exacta manteniendo el orden desde el fondo al tope."""
+        nueva_pila = MiPila(self.capacidad)
+        # Se apilan de 0 a cantidad-1 para preservar la base y la cima
+        for i in range(self.cantidad):
+            nueva_pila.apilar(self.datos[i])
+        return nueva_pila
 
     def longitud(self):
-        pass
+        return self.cantidad
 
     def esta_vacia(self):
-        pass
+        return self.cantidad == 0

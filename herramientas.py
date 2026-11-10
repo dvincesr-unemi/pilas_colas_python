@@ -53,3 +53,35 @@ def confirmar(pregunta):
 def validar_cedula(cedula):
     cedula = cedula.strip()
     return len(cedula) == 10 and cedula.isdigit()
+
+def pedir_opcion_menu(titulo, lineas_menu, opciones_validas):
+    """Muestra la interfaz del menú y no sale del bucle hasta que
+
+    el usuario ingresa una de las opciones permitidas.
+
+    :param titulo: Texto del encabezado.
+    :param lineas_menu: Lista o tupla con las líneas de texto ya formateadas.
+    :param opciones_validas: Colección con las teclas aceptadas (ej. ('1', '2',
+    '3', '0')).
+    :return: La opción elegida en mayúsculas y limpia de espacios.
+    """
+    imprimir_titulo(titulo)
+
+    # Dibuja las líneas que componen el cuerpo del menú
+    for linea in lineas_menu:
+        print(f"  {linea}")
+    print()
+
+    # Bucle de validación interactiva
+    while True:
+        entrada = (
+            input(f"{COLORES['AMARILLO']}Opción: {COLORES['RESET']}")
+            .strip()
+            .upper()
+        )
+        if entrada in opciones_validas:
+            return entrada
+
+        imprimir_error(
+            f"Opción inválida. Opciones permitidas: {', '.join(opciones_validas)}"
+        )
